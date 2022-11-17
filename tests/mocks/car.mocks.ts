@@ -47,7 +47,7 @@ const CarMocks = {
 } as {
   input: Record<string, ICar>;
   output: {
-    carOutput: ICar;
+    carOutput: Required<ICar>;
     carsOutput: ICar[];
   };
 };

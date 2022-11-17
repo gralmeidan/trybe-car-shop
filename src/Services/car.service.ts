@@ -16,4 +16,6 @@ export default class CarService {
     const response = await odm.getAll();
     return response.map(this.createCarDomain);
   };
+
+  public findById = async (id: string) => ({});
 }
