@@ -37,4 +37,34 @@ describe('Tests for all routes on /cars', function () {
       (Model.find as Sinon.SinonStub).restore();
     });
   });
+
+  describe('Tests GET /cars:id', function () {
+    afterEach(function () {
+      (Model.findOne as Sinon.SinonStub).restore();
+    });
+
+    it('Should succesfully return a car', async function () {
+      const { carOutput } = CarMocks.output;
+      Sinon.stub(Model, 'findOne').resolves(carOutput);
+
+      const url = `/cars/${carOutput._id}`;
+      const response = await request(app).get(url).send();
+
+      expect(response.status).to.equal(200);
+      expect(response.body).to.deep.equal(new Car(carOutput));
+    });
+
+    it('Should return an error when receiving an invalid id', async function () {
+      const { carOutput } = CarMocks.output;
+      Sinon.stub(Model, 'findOne').resolves(carOutput);
+
+      const url = '/cars/invalid%20id';
+      const response = await request(app).get(url).send();
+
+      expect(response.status).to.equal(422);
+      expect(response.body).to.deep.equal({
+        message: 'Invalid mongo id',
+      });
+    });
+  });
 });
