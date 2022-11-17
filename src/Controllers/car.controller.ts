@@ -9,4 +9,10 @@ export default class CarController {
 
     res.status(201).json(result);
   };
+
+  public getAll = async (_req: Request, res: Response) => {
+    const result = await this.service.getAll();
+
+    res.status(200).json(result);
+  };
 }

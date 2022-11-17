@@ -3,17 +3,17 @@ import ICar from '../Interfaces/ICar';
 import CarODM from '../Models/CarODM';
 
 export default class CarService {
-  constructor(protected odm: CarODM = new CarODM()) {}
-
   private createCarDomain = (car: ICar): Car => new Car(car);
 
   public insert = async (car: ICar) => {
-    const response = await this.odm.create(car);
+    const odm = new CarODM();
+    const response = await odm.create(car);
     return this.createCarDomain(response);
   };
 
   public getAll = async () => {
-    const response = await this.odm.getAll();
+    const odm = new CarODM();
+    const response = await odm.getAll();
     return response.map(this.createCarDomain);
   };
 }

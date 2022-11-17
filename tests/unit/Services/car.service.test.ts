@@ -1,6 +1,6 @@
 import Sinon from 'sinon';
 import { expect } from 'chai';
-import CarODM from '../../../src/Models/CarODM';
+import { Model } from 'mongoose';
 import CarService from '../../../src/Services/car.service';
 import CarMocks from '../../mocks/car.mocks';
 import Car from '../../../src/Domains/Car';
@@ -11,28 +11,26 @@ describe('Unit tests for CarService', function () {
       const { validCar } = CarMocks.input;
       const { carOutput } = CarMocks.output;
 
-      const odm = {
-        create: Sinon.stub().resolves(carOutput),
-      } as unknown as CarODM;
-      const service = new CarService(odm);
+      Sinon.stub(Model, 'create').resolves(carOutput);
+      const service = new CarService();
 
       const response = await service.insert(validCar);
 
       expect(response).to.deep.equal(new Car(carOutput));
+      (Model.create as Sinon.SinonStub).restore();
     });
   });
   describe('Tests CarService.getAll', function () {
     it('Should list all cars on DB', async function () {
       const { carsOutput } = CarMocks.output;
 
-      const odm = {
-        getAll: Sinon.stub().resolves(carsOutput),
-      } as unknown as CarODM;
-      const service = new CarService(odm);
+      Sinon.stub(Model, 'find').resolves(carsOutput);
+      const service = new CarService();
 
       const response = await service.getAll();
 
       expect(response).to.deep.equal(carsOutput.map((car) => new Car(car)));
+      (Model.find as Sinon.SinonStub).restore();
     });
   });
 });

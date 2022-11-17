@@ -7,10 +7,6 @@ import Car from '../../../src/Domains/Car';
 import CarMocks from '../../mocks/car.mocks';
 
 describe('Tests for all routes on /cars', function () {
-  afterEach(function () {
-    (Model.create as Sinon.SinonStub).restore();
-  });
-
   describe('Tests POST /cars', function () {
     it('Should successfully register a car', async function () {
       const { validCar } = CarMocks.input;
@@ -22,6 +18,23 @@ describe('Tests for all routes on /cars', function () {
 
       expect(response.status).to.equal(201);
       expect(response.body).to.deep.equal(new Car(carOutput));
+      (Model.create as Sinon.SinonStub).restore();
+    });
+  });
+
+  describe('Tests GET /cars', function () {
+    it('Should succesfully return all cars', async function () {
+      const { carsOutput } = CarMocks.output;
+
+      Sinon.stub(Model, 'find').resolves(carsOutput);
+
+      const response = await request(app).get('/cars').send();
+
+      expect(response.status).to.equal(200);
+      expect(response.body).to.deep.equal(
+        carsOutput.map((car) => new Car(car)),
+      );
+      (Model.find as Sinon.SinonStub).restore();
     });
   });
 });
