@@ -10,4 +10,8 @@ export default abstract class ODM<T> {
   public async create(object: T): Promise<T> {
     return this.model.create({ ...object });
   }
+
+  public async getAll(): Promise<T[]> {
+    return this.model.find();
+  }
 }
