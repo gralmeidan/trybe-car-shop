@@ -1,4 +1,3 @@
-import Car from '../../src/Domains/Car';
 import ICar from '../../src/Interfaces/ICar';
 
 const CarMocks = {
@@ -13,20 +12,20 @@ const CarMocks = {
     },
   },
   output: {
-    carOutput: new Car({
+    carOutput: {
       model: 'Marea',
       year: 2002,
       color: 'Black',
       buyValue: 15.99,
       doorsQty: 4,
       seatsQty: 5,
-      id: '6348513f34c397abcad040b2',
+      _id: '6348513f34c397abcad040b2',
       status: false,
-    }),
+    },
   },
 } as {
   input: Record<string, ICar>;
-  output: Record<string, Car>;
+  output: Record<string, ICar>;
 };
 
 export default CarMocks;

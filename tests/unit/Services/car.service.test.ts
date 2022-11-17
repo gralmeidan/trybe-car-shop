@@ -3,6 +3,7 @@ import { expect } from 'chai';
 import CarODM from '../../../src/Models/CarODM';
 import CarService from '../../../src/Services/car.service';
 import CarMocks from '../../mocks/car.mocks';
+import Car from '../../../src/Domains/Car';
 
 describe('Unit tests for CarService', function () {
   it('Should successfully insert into the database', async function () {
@@ -16,6 +17,6 @@ describe('Unit tests for CarService', function () {
 
     const response = await service.insert(validCar);
 
-    expect(response).to.deep.equal(carOutput);
+    expect(response).to.deep.equal(new Car(carOutput));
   });
 });

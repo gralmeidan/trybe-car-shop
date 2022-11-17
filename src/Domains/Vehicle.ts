@@ -9,7 +9,7 @@ export default abstract class Vehicle {
   protected buyValue: number;
 
   constructor(props: IVehicle) {
-    this.id = props.id;
+    this.id = props._id;
     this.model = props.model;
     this.year = props.year;
     this.color = props.color;

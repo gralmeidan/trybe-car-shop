@@ -3,6 +3,7 @@ import { Model } from 'mongoose';
 import Sinon from 'sinon';
 import request from 'supertest';
 import app from '../../../src/app';
+import Car from '../../../src/Domains/Car';
 import CarMocks from '../../mocks/car.mocks';
 
 describe('Tests for all routes on /cars', function () {
@@ -20,7 +21,7 @@ describe('Tests for all routes on /cars', function () {
       const response = await request(app).post('/cars').send(validCar);
 
       expect(response.status).to.equal(201);
-      expect(response.body).to.deep.equal(carOutput);
+      expect(response.body).to.deep.equal(new Car(carOutput));
     });
   });
 });
