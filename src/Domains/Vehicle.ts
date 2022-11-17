@@ -17,10 +17,22 @@ export default abstract class Vehicle {
     this.buyValue = props.buyValue;
   }
 
-  public getId = () => this.id;
-  public getModel = () => this.model;
-  public getYear = () => this.year;
-  public getColor = () => this.color;
-  public getStatus = () => this.status;
-  public getBuyValue = () => this.buyValue;
+  public getId() {
+    return this.id;
+  }
+  public getModel() {
+    return this.model;
+  }
+  public getYear() {
+    return this.year;
+  }
+  public getColor() {
+    return this.color;
+  }
+  public getStatus() {
+    return this.status;
+  }
+  public getBuyValue() {
+    return this.buyValue;
+  }
 }

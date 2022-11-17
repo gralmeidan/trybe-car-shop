@@ -11,6 +11,10 @@ export default class Car extends Vehicle {
     this.seatsQty = props.seatsQty;
   }
 
-  public getDoorsQty = () => this.doorsQty;
-  public getSeatsQty = () => this.seatsQty;
+  public getDoorsQty() {
+    return this.doorsQty;
+  }
+  public getSeatsQty() {
+    return this.seatsQty;
+  }
 }
