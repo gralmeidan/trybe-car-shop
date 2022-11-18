@@ -1,8 +1,9 @@
 import { NextFunction, Request, Response } from 'express';
 import CarService from '../Services/car.service';
+import MotorcycleService from '../Services/motorcycle.service';
 
-export default class CarController {
-  constructor(private service = new CarService()) {}
+export default class VehicleController {
+  constructor(private service: CarService | MotorcycleService) {}
 
   public insert = async (req: Request, res: Response) => {
     const result = await this.service.insert(req.body);

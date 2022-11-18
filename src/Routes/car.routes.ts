@@ -1,8 +1,9 @@
 import { Router } from 'express';
-import CarController from '../Controllers/car.controller';
+import VehicleController from '../Controllers/vehicle.controller';
+import CarService from '../Services/car.service';
 
 const CarRouter = Router();
-const controller = new CarController();
+const controller = new VehicleController(new CarService());
 
 CarRouter.post('/', controller.insert);
 CarRouter.get('/', controller.getAll);
