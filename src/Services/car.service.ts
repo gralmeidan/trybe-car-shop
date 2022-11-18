@@ -4,6 +4,12 @@ import ICar from '../Interfaces/ICar';
 import CarODM from '../Models/CarODM';
 
 export default class CarService {
+  private validateId = (id: string) => {
+    if (!/^[a-f\d]{24}$/i.test(id)) {
+      throw new RestError(422, 'Invalid mongo id');
+    }
+  };
+
   private createCarDomain = (car: ICar): Car => new Car(car);
 
   public insert = async (car: ICar) => {
@@ -19,9 +25,7 @@ export default class CarService {
   };
 
   public findById = async (id: string) => {
-    if (!/^[a-f\d]{24}$/i.test(id)) {
-      throw new RestError(422, 'Invalid mongo id');
-    }
+    this.validateId(id);
 
     const odm = new CarODM();
     const response = await odm.findById(id);
@@ -31,5 +35,18 @@ export default class CarService {
     }
 
     return this.createCarDomain(response);
+  };
+
+  public update = async (id: string, options: Partial<Omit<ICar, '_id'>>) => {
+    this.validateId(id);
+
+    const odm = new CarODM();
+    const updateResult = await odm.updateById(id, options);
+
+    if (!updateResult.matchedCount) {
+      throw new RestError(404, 'Car not found');
+    }
+
+    return this.findById(id);
   };
 }

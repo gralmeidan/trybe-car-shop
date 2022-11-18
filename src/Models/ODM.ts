@@ -1,4 +1,11 @@
-import { Model, Schema, model, models } from 'mongoose';
+import {
+  Model,
+  Schema,
+  model,
+  models,
+  UpdateWriteOpResult,
+  UpdateQuery,
+} from 'mongoose';
 
 export default abstract class ODM<T> {
   protected model: Model<T>;
@@ -17,5 +24,12 @@ export default abstract class ODM<T> {
 
   public async findById(id: string): Promise<T | null> {
     return this.model.findOne({ _id: id });
+  }
+
+  public async updateById(
+    id: string,
+    options: UpdateQuery<T>,
+  ): Promise<UpdateWriteOpResult> {
+    return this.model.updateOne({ _id: id }, options);
   }
 }
