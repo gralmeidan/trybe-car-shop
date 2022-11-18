@@ -7,7 +7,7 @@ import {
   UpdateQuery,
 } from 'mongoose';
 
-export default abstract class ODM<T> {
+export default abstract class AbstractODM<T> {
   protected model: Model<T>;
 
   constructor(protected schema: Schema<T>, name: string) {
