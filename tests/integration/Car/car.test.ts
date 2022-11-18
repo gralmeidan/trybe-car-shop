@@ -16,9 +16,9 @@ describe('Tests for all routes on /cars', function () {
 
       const response = await request(app).post('/cars').send(validCar);
 
+      (Model.create as Sinon.SinonStub).restore();
       expect(response.status).to.equal(201);
       expect(response.body).to.deep.equal(new Car(carOutput));
-      (Model.create as Sinon.SinonStub).restore();
     });
   });
 
