@@ -1,13 +1,13 @@
 import Motorcycle from '../Domains/Motorcycle';
 import IMotorcycle from '../Interfaces/IMotorcycle';
 import MotorcycleODM from '../Models/MotorcycleODM';
+import AbstractService from './abstract.service';
 
-export default class MotorcycleService {
-  private createMotorcycleDomain = (obj: IMotorcycle) => new Motorcycle(obj);
-
-  public insert = async (obj: IMotorcycle) => {
-    const odm = new MotorcycleODM();
-    const result = await odm.create(obj);
-    return this.createMotorcycleDomain(result);
-  };
+export default class MotorcycleService extends AbstractService<
+IMotorcycle,
+Motorcycle
+> {
+  constructor() {
+    super(MotorcycleODM, Motorcycle, 'Motorcycle');
+  }
 }
