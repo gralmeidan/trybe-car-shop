@@ -45,9 +45,9 @@ const CarMocks = {
     ],
   },
 } as {
-  input: Record<string, ICar>;
+  input: Record<string, Omit<ICar, 'id'>>;
   output: {
-    carOutput: Required<ICar>;
+    carOutput: Required<Omit<ICar, 'id'>>;
     carsOutput: ICar[];
   };
 };
