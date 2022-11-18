@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { Model } from 'mongoose';
+import { Model, UpdateWriteOpResult } from 'mongoose';
 import Sinon from 'sinon';
 import request from 'supertest';
 import app from '../../../src/app';
@@ -64,6 +64,55 @@ describe('Tests for all routes on /cars', function () {
       expect(response.status).to.equal(422);
       expect(response.body).to.deep.equal({
         message: 'Invalid mongo id',
+      });
+    });
+  });
+
+  describe('Tests PUT /cars:id', function () {
+    afterEach(function () {
+      (Model.findOne as Sinon.SinonStub).restore();
+      (Model.updateOne as Sinon.SinonStub).restore();
+    });
+
+    it('Should succesfully return the updated car', async function () {
+      const { carOutput } = CarMocks.output;
+      Sinon.stub(Model, 'findOne').resolves({
+        ...carOutput,
+        color: 'Turquoise',
+      });
+      Sinon.stub(Model, 'updateOne').resolves({
+        matchedCount: 1,
+      } as unknown as UpdateWriteOpResult);
+
+      const url = `/cars/${carOutput._id}`;
+      const response = await request(app).put(url).send({
+        color: 'Turquoise',
+      });
+
+      expect(response.status).to.equal(200);
+      expect(response.body).to.deep.equal(
+        new Car({
+          ...carOutput,
+          color: 'Turquoise',
+        }),
+      );
+    });
+
+    it('Should return an error when the car is not found', async function () {
+      const { carOutput } = CarMocks.output;
+      Sinon.stub(Model, 'findOne').resolves(undefined);
+      Sinon.stub(Model, 'updateOne').resolves({
+        matchedCount: 0,
+      } as unknown as UpdateWriteOpResult);
+
+      const url = `/cars/${carOutput._id}`;
+      const response = await request(app).put(url).send({
+        color: 'Turquoise',
+      });
+
+      expect(response.status).to.equal(404);
+      expect(response.body).to.deep.equal({
+        message: 'Car not found',
       });
     });
   });
