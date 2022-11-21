@@ -60,4 +60,17 @@ export default abstract class AbstractService<Interface, DomainType> {
 
     return this.findById(id);
   };
+
+  public removeById = async (id: string) => {
+    this.validateId(id);
+
+    const odm = new this.ODM();
+    const deleteResult = await odm.removeById(id);
+
+    if (!deleteResult.deletedCount) {
+      throw new RestError(404, `${this.name} not found`);
+    }
+
+    return true;
+  };
 }

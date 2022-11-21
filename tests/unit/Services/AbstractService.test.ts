@@ -1,3 +1,4 @@
+/* eslint-disable sonarjs/no-duplicate-string */
 import Sinon from 'sinon';
 import * as chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
@@ -138,6 +139,57 @@ describe('Unit tests for AbstractService', function () {
       expect(err.message).to.equal('Invalid mongo id');
       expect(ODM.updateById).to.not.have.been.called;
       expect(ODM.findById).to.not.have.been.called;
+    });
+  });
+
+  describe('Tests AbstractService.removeById', function () {
+    it('Should return true when succesfully deleting an element', async function () {
+      const ODM = {
+        removeById: Sinon.stub().resolves({
+          acknowledged: true,
+          deletedCount: 1,
+        }),
+      };
+      const service = new MockService(ODM);
+
+      const response = await service.removeById(stdOutput.id);
+
+      expect(response).to.be.true;
+      expect(ODM.removeById).to.have.been.calledWith(stdOutput.id);
+    });
+
+    it('Should throw an error when the id is invalid', async function () {
+      const ODM = {
+        removeById: Sinon.stub().resolves({
+          acknowledged: true,
+          deletedCount: 0,
+        }),
+      };
+      const service = new MockService(ODM);
+
+      const err = await expect(
+        service.removeById('INVALID ID'),
+      ).to.be.rejectedWith(RestError);
+      expect(err.statusCode).to.equal(422);
+      expect(err.message).to.equal('Invalid mongo id');
+      expect(ODM.removeById).to.not.have.been.called;
+    });
+
+    it('Should throw an error when the element is not found', async function () {
+      const ODM = {
+        removeById: Sinon.stub().resolves({
+          acknowledged: true,
+          deletedCount: 0,
+        }),
+      };
+      const service = new MockService(ODM);
+
+      const err = await expect(
+        service.removeById(stdOutput.id),
+      ).to.be.rejectedWith(RestError);
+      expect(err.statusCode).to.equal(404);
+      expect(err.message).to.equal('Mock not found');
+      expect(ODM.removeById).to.have.been.called;
     });
   });
 });

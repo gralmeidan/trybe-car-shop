@@ -32,4 +32,8 @@ export default abstract class AbstractODM<T> {
   ): Promise<UpdateWriteOpResult> {
     return this.model.updateOne({ _id: id }, options);
   }
+
+  public async removeById(id: string) {
+    return this.model.deleteOne({ _id: id });
+  }
 }
