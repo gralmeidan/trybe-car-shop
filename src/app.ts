@@ -1,7 +1,7 @@
 import express from 'express';
 import handleError from './Middlewares/handleError.middleware';
-import CarRouter from './Routes/car.routes';
-import MotorcycleRouter from './Routes/motorcycle.routes';
+import CarRouter from './Routes/Car.routes';
+import MotorcycleRouter from './Routes/Motorcycle.routes';
 
 const app = express();
 

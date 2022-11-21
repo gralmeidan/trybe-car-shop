@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import VehicleController from '../Controllers/vehicle.controller';
-import CarService from '../Services/car.service';
+import VehicleController from '../Controllers/VehicleController';
+import CarService from '../Services/CarService';
 
 const CarRouter = Router();
 const controller = new VehicleController(new CarService());

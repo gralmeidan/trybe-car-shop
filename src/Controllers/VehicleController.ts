@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
-import CarService from '../Services/car.service';
-import MotorcycleService from '../Services/motorcycle.service';
+import CarService from '../Services/CarService';
+import MotorcycleService from '../Services/MotorcycleService';
 
 export default class VehicleController {
   constructor(private service: CarService | MotorcycleService) {}

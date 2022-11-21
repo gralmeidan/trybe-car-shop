@@ -1,6 +1,6 @@
 /* eslint-disable max-classes-per-file */
 import Sinon from 'sinon';
-import AbstractService from '../../../../src/Services/abstract.service';
+import AbstractService from '../../../../src/Services/AbstractService';
 import CreateMockODM from './CreateMockODM';
 import MockDomain from './MockDomain';
 

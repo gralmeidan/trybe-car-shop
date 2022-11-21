@@ -1,7 +1,7 @@
 import Car from '../Domains/Car';
 import ICar from '../Interfaces/ICar';
 import CarODM from '../Models/CarODM';
-import AbstractService from './abstract.service';
+import AbstractService from './AbstractService';
 
 export default class CarService extends AbstractService<ICar, Car> {
   constructor() {
