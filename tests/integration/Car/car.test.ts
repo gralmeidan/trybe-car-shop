@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { Model, UpdateWriteOpResult } from 'mongoose';
-import Sinon from 'sinon';
+import Sinon, { SinonStub } from 'sinon';
 import request from 'supertest';
 import app from '../../../src/app';
 import Car from '../../../src/Domains/Car';
@@ -114,6 +114,24 @@ describe('Tests for all routes on /cars', function () {
       expect(response.body).to.deep.equal({
         message: 'Car not found',
       });
+    });
+  });
+
+  describe('Tests DELETE /cars/:id', function () {
+    it('Should return an empty body with a 204 status code', async function () {
+      const { carOutput } = CarMocks.output;
+      Sinon.stub(Model, 'deleteOne').resolves({
+        acknowledged: true,
+        deletedCount: 1,
+      });
+      const url = `/cars/${carOutput._id}`;
+
+      const response = await request(app).delete(url).send();
+
+      expect(response.status).to.equal(204);
+      expect(response.body).to.deep.equal({});
+
+      (Model.deleteOne as SinonStub).restore();
     });
   });
 });

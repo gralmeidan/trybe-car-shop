@@ -118,4 +118,22 @@ describe('Tests for all routes on /motorcycles', function () {
       });
     });
   });
+
+  describe('Tests DELETE /motorcycles/:id', function () {
+    it('Should return an empty body with a 204 status code', async function () {
+      const { motorcycleOutput } = MotorcycleMocks.output;
+      Sinon.stub(Model, 'deleteOne').resolves({
+        acknowledged: true,
+        deletedCount: 1,
+      });
+      const url = `/motorcycles/${motorcycleOutput._id}`;
+
+      const response = await request(app).delete(url).send();
+
+      expect(response.status).to.equal(204);
+      expect(response.body).to.deep.equal({});
+
+      (Model.deleteOne as SinonStub).restore();
+    });
+  });
 });

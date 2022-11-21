@@ -10,5 +10,6 @@ MotorcycleRouter.get('/', controller.getAll);
 
 MotorcycleRouter.get('/:id', controller.findById);
 MotorcycleRouter.put('/:id', controller.update);
+MotorcycleRouter.delete('/:id', controller.removeById);
 
 export default MotorcycleRouter;

@@ -10,5 +10,6 @@ CarRouter.get('/', controller.getAll);
 
 CarRouter.get('/:id', controller.findById);
 CarRouter.put('/:id', controller.update);
+CarRouter.delete('/:id', controller.removeById);
 
 export default CarRouter;

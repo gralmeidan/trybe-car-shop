@@ -36,4 +36,18 @@ export default class VehicleController {
       next(error);
     }
   };
+
+  public removeById = async (
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ) => {
+    const { id } = req.params;
+    try {
+      await this.service.removeById(id);
+      res.status(204).send();
+    } catch (error) {
+      next(error);
+    }
+  };
 }
