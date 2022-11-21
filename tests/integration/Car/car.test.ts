@@ -38,7 +38,7 @@ describe('Tests for all routes on /cars', function () {
     });
   });
 
-  describe('Tests GET /cars:id', function () {
+  describe('Tests GET /cars/:id', function () {
     afterEach(function () {
       (Model.findOne as Sinon.SinonStub).restore();
     });
@@ -68,7 +68,7 @@ describe('Tests for all routes on /cars', function () {
     });
   });
 
-  describe('Tests PUT /cars:id', function () {
+  describe('Tests PUT /cars/:id', function () {
     afterEach(function () {
       (Model.findOne as Sinon.SinonStub).restore();
       (Model.updateOne as Sinon.SinonStub).restore();
