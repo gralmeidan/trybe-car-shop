@@ -5,16 +5,22 @@ import MotorcycleService from '../Services/MotorcycleService';
 export default class VehicleController {
   constructor(private service: CarService | MotorcycleService) {}
 
-  public insert = async (req: Request, res: Response) => {
-    const result = await this.service.insert(req.body);
-
-    res.status(201).json(result);
+  public insert = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const result = await this.service.insert(req.body);
+      res.status(201).json(result);
+    } catch (error) {
+      next(error);
+    }
   };
 
-  public getAll = async (_req: Request, res: Response) => {
-    const result = await this.service.getAll();
-
-    res.status(200).json(result);
+  public getAll = async (_req: Request, res: Response, next: NextFunction) => {
+    try {
+      const result = await this.service.getAll();
+      res.status(200).json(result);
+    } catch (error) {
+      next(error);
+    }
   };
 
   public findById = async (req: Request, res: Response, next: NextFunction) => {

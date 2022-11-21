@@ -1,4 +1,5 @@
 import IMotorcycle from '../Interfaces/IMotorcycle';
+import MotorcycleSchema from './Joi/MotorcycleSchema';
 import Vehicle from './Vehicle';
 
 export default class Motorcycle extends Vehicle {
@@ -17,4 +18,6 @@ export default class Motorcycle extends Vehicle {
   public getEngineCapacity() {
     return this.engineCapacity;
   }
+
+  static Schema = MotorcycleSchema;
 }

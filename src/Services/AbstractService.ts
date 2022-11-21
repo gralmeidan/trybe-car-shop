@@ -1,16 +1,40 @@
+import Joi from 'joi';
 import RestError from '../Errors/RestError';
 import AbstractODM from '../Models/AbstractODM';
 
 export default abstract class AbstractService<Interface, DomainType> {
+  protected insertSchema: Joi.ObjectSchema;
+  protected updateSchema: Joi.ObjectSchema;
+
   constructor(
     protected ODM: {
       new (): AbstractODM<Interface>;
     },
     protected Domain: {
       new (obj: Interface): DomainType;
+      Schema: Joi.ObjectSchema;
     },
     protected name: string,
-  ) {}
+  ) {
+    // Forks Domain.Schema to have one where everything is required and other where
+    // everything is optional.
+    const schemaKeys = Object.keys(Domain.Schema.describe().keys);
+
+    this.insertSchema = Domain.Schema.fork(schemaKeys, (el) => el.required());
+    this.updateSchema = Domain.Schema.min(1);
+  }
+
+  protected validateObjInput = (
+    obj: Partial<Interface>,
+    schema: Joi.ObjectSchema,
+  ) => {
+    const { value, error } = schema.validate(obj);
+    if (error) {
+      throw new RestError(422, error.message);
+    }
+
+    return value;
+  };
 
   protected validateId = (id: string) => {
     if (!/^[a-f\d]{24}$/i.test(id)) {
@@ -21,8 +45,10 @@ export default abstract class AbstractService<Interface, DomainType> {
   protected createDomain = (obj: Interface): DomainType => new this.Domain(obj);
 
   public insert = async (obj: Interface) => {
+    const value = this.validateObjInput(obj, this.insertSchema);
     const odm = new this.ODM();
-    const response = await odm.create(obj);
+
+    const response = await odm.create(value);
     return this.createDomain(response);
   };
 
@@ -45,14 +71,15 @@ export default abstract class AbstractService<Interface, DomainType> {
     return this.createDomain(response);
   };
 
-  public update = async (
-    id: string,
-    options: Partial<Omit<Interface, '_id'>>,
-  ) => {
+  public update = async (id: string, obj: Partial<Omit<Interface, '_id'>>) => {
+    const value = this.validateObjInput(
+      obj as Partial<Interface>,
+      this.updateSchema,
+    );
     this.validateId(id);
 
     const odm = new this.ODM();
-    const updateResult = await odm.updateById(id, options);
+    const updateResult = await odm.updateById(id, value);
 
     if (!updateResult.matchedCount) {
       throw new RestError(404, `${this.name} not found`);

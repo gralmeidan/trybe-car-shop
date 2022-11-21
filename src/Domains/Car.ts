@@ -1,4 +1,5 @@
 import ICar from '../Interfaces/ICar';
+import CarSchema from './Joi/CarSchema';
 import Vehicle from './Vehicle';
 
 export default class Car extends Vehicle {
@@ -17,4 +18,6 @@ export default class Car extends Vehicle {
   public getSeatsQty() {
     return this.seatsQty;
   }
+
+  static Schema = CarSchema;
 }
