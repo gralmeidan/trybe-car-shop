@@ -36,6 +36,19 @@ describe('Unit tests for AbstractService', function () {
       expect(response).to.deep.equal(stdOutput);
       expect(ODM.create).to.have.been.calledWith(validInput);
     });
+
+    it('Should throw an error when an invalid value is passed', async function () {
+      const ODM = {
+        create: Sinon.stub().resolves(dbOutput),
+      };
+      const service = new MockService(ODM);
+
+      const err = await expect(
+        service.insert({ goty: 12345 } as never),
+      ).to.be.rejectedWith(RestError);
+      expect(err.statusCode).to.equal(422);
+      expect(ODM.create).to.not.have.been.called;
+    });
   });
 
   describe('Tests AbstractService.getAll', function () {
@@ -137,6 +150,21 @@ describe('Unit tests for AbstractService', function () {
       ).to.be.rejectedWith(RestError);
       expect(err.statusCode).to.equal(422);
       expect(err.message).to.equal('Invalid mongo id');
+      expect(ODM.updateById).to.not.have.been.called;
+      expect(ODM.findById).to.not.have.been.called;
+    });
+
+    it('Should throw an error when an invalid value is passed', async function () {
+      const ODM = {
+        updateById: Sinon.stub().resolves({ matchedCount: 0 }),
+        findById: Sinon.stub().resolves(stdOutput),
+      };
+      const service = new MockService(ODM);
+
+      const err = await expect(
+        service.update(stdOutput.id, { goty: 12345 } as never),
+      ).to.be.rejectedWith(RestError);
+      expect(err.statusCode).to.equal(422);
       expect(ODM.updateById).to.not.have.been.called;
       expect(ODM.findById).to.not.have.been.called;
     });

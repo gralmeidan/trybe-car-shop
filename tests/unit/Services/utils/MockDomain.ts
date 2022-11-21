@@ -1,3 +1,5 @@
+import Joi from 'joi';
+
 interface MockInterface {
   _id?: string;
   goty: string;
@@ -11,4 +13,8 @@ export default class MockDomain {
     this.id = obj._id;
     this.goty = obj.goty;
   }
+
+  static Schema = Joi.object({
+    goty: Joi.string(),
+  });
 }

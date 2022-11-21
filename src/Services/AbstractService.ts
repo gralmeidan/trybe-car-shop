@@ -18,9 +18,11 @@ export default abstract class AbstractService<Interface, DomainType> {
   ) {
     // Forks Domain.Schema to have one where everything is required and other where
     // everything is optional.
-    const schemaKeys = Object.keys(Domain.Schema.describe().keys);
+    const requiredKeys = Object.keys(Domain.Schema.describe().keys).filter(
+      (key) => key !== 'status',
+    );
 
-    this.insertSchema = Domain.Schema.fork(schemaKeys, (el) => el.required());
+    this.insertSchema = Domain.Schema.fork(requiredKeys, (el) => el.required());
     this.updateSchema = Domain.Schema.min(1);
   }
 
