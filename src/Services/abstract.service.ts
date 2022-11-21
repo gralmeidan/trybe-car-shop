@@ -1,13 +1,13 @@
 import RestError from '../Errors/RestError';
 import AbstractODM from '../Models/AbstractODM';
 
-export default abstract class AbstractService<T, D> {
+export default abstract class AbstractService<Interface, DomainType> {
   constructor(
     protected ODM: {
-      new (): AbstractODM<T>;
+      new (): AbstractODM<Interface>;
     },
     protected Domain: {
-      new (obj: T): D;
+      new (obj: Interface): DomainType;
     },
     protected name: string,
   ) {}
@@ -18,9 +18,9 @@ export default abstract class AbstractService<T, D> {
     }
   };
 
-  protected createDomain = (obj: T): D => new this.Domain(obj);
+  protected createDomain = (obj: Interface): DomainType => new this.Domain(obj);
 
-  public insert = async (obj: T) => {
+  public insert = async (obj: Interface) => {
     const odm = new this.ODM();
     const response = await odm.create(obj);
     return this.createDomain(response);
@@ -45,7 +45,10 @@ export default abstract class AbstractService<T, D> {
     return this.createDomain(response);
   };
 
-  public update = async (id: string, options: Partial<Omit<T, '_id'>>) => {
+  public update = async (
+    id: string,
+    options: Partial<Omit<Interface, '_id'>>,
+  ) => {
     this.validateId(id);
 
     const odm = new this.ODM();
