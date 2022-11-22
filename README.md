@@ -97,7 +97,7 @@ Adiciona um carro ou motocicleta ao banco de dados. Em ambos endpoints o campo `
 
 - `/cars`:
 
-```json
+```ts
 {
   "model": "Marea",
   "year": 2002,
@@ -111,7 +111,7 @@ Adiciona um carro ou motocicleta ao banco de dados. Em ambos endpoints o campo `
 
 - `/motorcycles`:
 
-```json
+```ts
 {
   "model": "Honda Cb 600f Hornet",
   "year": 2005,
@@ -212,7 +212,7 @@ Atualiza um carro ou motocicleta. Nesse endpoint todos os campos são opcionais,
 
 - `/cars`:
 
-```json
+```ts
 {
   "model"?: "Marea",
   "year"?: 2002,
@@ -226,7 +226,7 @@ Atualiza um carro ou motocicleta. Nesse endpoint todos os campos são opcionais,
 
 - `/motorcycles`:
 
-```json
+```ts
 {
   "model"?: "Honda Cb 600f Hornet",
   "year"?: 2005,
